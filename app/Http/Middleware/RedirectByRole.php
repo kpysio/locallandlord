@@ -19,9 +19,9 @@ class RedirectByRole
 
         // If user just logged in (was redirected to /dashboard), send them to role-specific dashboard
         if ($request->path() === 'dashboard' && $request->user()) {
-            if ($request->user()->role === 'admin') {
+            if ($request->user()->user_type === 'admin') {
                 return redirect('/admin/traders');
-            } elseif ($request->user()->role === 'landlord') {
+            } elseif ($request->user()->user_type === 'landlord') {
                 return redirect('/landlord/dashboard');
             }
         }

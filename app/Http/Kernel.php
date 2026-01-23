@@ -60,6 +60,11 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         // Custom Role Middleware
+        // hitesh
         'role' => \App\Http\Middleware\CheckRole::class,
     ];
+
+    protected $middlewareAliases = [
+        'role' => \App\Http\Middleware\CheckRole::class,
+];
 }

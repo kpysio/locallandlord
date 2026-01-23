@@ -9,14 +9,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('user_type')->default('trader')->after('password');
+            if (Schema::hasColumn('users', 'role') && ! Schema::hasColumn('users', 'user_type')) {
+                $table->renameColumn('role', 'user_type');
+            }
         });
     }
 
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('user_type');
+            if (Schema::hasColumn('users', 'user_type') && ! Schema::hasColumn('users', 'role')) {
+                $table->renameColumn('user_type', 'role');
+            }
         });
     }
 };
+

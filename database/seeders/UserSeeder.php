@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
                 [
                     'name' => str_replace('@test.com', '', $email),
                     'password' => bcrypt($password),
-                    'role' => 'landlord',
+                    'user_type' => 'landlord',
                 ]
             );
             $landlord = Landlord::firstOrCreate(['user_id' => $user->id]);
@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
                 [
                     'name' => "Trader {$trader_count}",
                     'password' => bcrypt($password),
-                    'role' => 'trader',
+                    'user_type' => 'trader',
                 ]
             );
 
@@ -82,7 +82,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'password' => bcrypt($password),
-                'role' => 'admin',
+                'user_type' => 'admin',
             ]
         );
     }
