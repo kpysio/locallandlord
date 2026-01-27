@@ -32,11 +32,11 @@ class AuthenticatedSessionController extends Controller
 
         // Redirect based on role
         if ($user->user_type === 'admin') {
-            // Don't use "intended" here; otherwise visiting /dashboard before login will override role routing.
             return redirect()->route('admin.traders.index');
         } elseif ($user->user_type === 'landlord') {
-            // Don't use "intended" here; otherwise visiting /dashboard before login will override role routing.
             return redirect()->route('landlord.dashboard');
+        } elseif ($user->user_type === 'trader') {
+            return redirect()->route('trader.dashboard');
         }
 
         return redirect()->intended(route('dashboard', absolute: false));

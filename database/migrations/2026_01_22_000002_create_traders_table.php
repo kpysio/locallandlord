@@ -12,6 +12,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('approval_status')->default('pending');
+            $table->string('business_name')->nullable();
+            $table->string('phone')->nullable();
+            $table->enum('plan', ['silver', 'gold'])->nullable();
             $table->timestamps();
         });
     }

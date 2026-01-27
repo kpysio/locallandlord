@@ -7,12 +7,24 @@ use App\Models\User;
 use App\Models\Landlord;
 use App\Models\Trader;
 use App\Models\Property;
+use App\Models\TradeCategory;
+use App\Models\TradeLocation;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
         $password = 'password';
+
+        // Master Trade Categories
+        $painting = TradeCategory::firstOrCreate(['name' => 'Painting'], ['status' => 'active']);
+        $carpenter = TradeCategory::firstOrCreate(['name' => 'Carpenter'], ['status' => 'active']);
+        $bathroom = TradeCategory::firstOrCreate(['name' => 'Bathroom'], ['status' => 'active']);
+
+        // Master Trade Locations
+        $barnet = TradeLocation::firstOrCreate(['name' => 'Barnet'], ['status' => 'active']);
+        $stanmore = TradeLocation::firstOrCreate(['name' => 'Stanmore'], ['status' => 'active']);
+        $ashford = TradeLocation::firstOrCreate(['name' => 'Ashford'], ['status' => 'active']);
 
         // Create 3 Landlords
         $landlord_emails = ['landlord1@test.com', 'landlord2@test.com', 'landlord3@test.com'];
@@ -72,8 +84,19 @@ class UserSeeder extends Seeder
                 ['user_id' => $user->id],
                 [
                     'approval_status' => $trader_count <= 5 ? 'pending' : 'approved',
+                    'business_name' => "Trader {$trader_count} Services",
+                    'phone' => '0135488458',
+                    'plan' => $trader_count % 2 === 0 ? 'silver' : 'gold',
                 ]
             );
+
+            // Attach trade categories (each trader gets 1–3)
+            $categories = collect([$painting->id, $carpenter->id, $bathroom->id])->random(rand(1, 3));
+            $trader->tradeCategories()->syncWithoutDetaching($categories);
+
+            // Attach trade locations (each trader gets 1–3)
+            $locations = collect([$barnet->id, $stanmore->id, $ashford->id])->random(rand(1, 3));
+            $trader->tradeLocations()->syncWithoutDetaching($locations);
         }
 
         // Create 1 Admin

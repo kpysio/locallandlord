@@ -12,11 +12,24 @@ class Trader extends Model
     protected $fillable = [
         'user_id',
         'approval_status',
+        'business_name',
+        'phone',
+        'plan',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function tradeCategories()
+    {
+        return $this->belongsToMany(TradeCategory::class, 'trader_trade_category');
+    }
+
+    public function tradeLocations()
+    {
+        return $this->belongsToMany(TradeLocation::class, 'trader_trade_location');
     }
 
     public function isApproved(): bool
