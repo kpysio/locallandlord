@@ -6,7 +6,8 @@ use App\Http\Controllers\Admin\TraderListController;
 use App\Http\Controllers\Landlord\LandlordDashboardController;
 use App\Http\Controllers\Landlord\PropertyController;
 use App\Http\Controllers\Landlord\TraderListController as LandlordTraderListController;
-use App\Http\Controllers\TraderProfileController;
+use App\Http\Controllers\Trader\TraderDashboardController;
+use App\Http\Controllers\Trader\TraderProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -26,9 +27,7 @@ Route::middleware('auth')->group(function () {
 
 // Trader routes
 Route::middleware(['auth', 'role:trader'])->prefix('trader')->name('trader.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('trader.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [TraderDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [TraderProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [TraderProfileController::class, 'update'])->name('profile.update');

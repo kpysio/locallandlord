@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Trader;
 
+use App\Http\Controllers\Controller;
 use App\Models\TradeCategory;
 use App\Models\TradeLocation;
 use Illuminate\Http\RedirectResponse;
@@ -69,4 +70,3 @@ class TraderProfileController extends Controller
             ->with('status', 'Profile updated successfully.');
     }
 }
-
