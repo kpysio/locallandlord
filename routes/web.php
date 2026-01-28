@@ -65,4 +65,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/traders/{trader}/reject', [TraderApprovalController::class, 'reject'])->name('admin.traders.reject');
 });
 
+// Public routes: trader profile
+use App\Http\Controllers\PublicSite\PublicTraderController;
+Route::get('/traders/{trader}', [PublicTraderController::class, 'show'])->name('public.traders.show');
+
 require __DIR__.'/auth.php';

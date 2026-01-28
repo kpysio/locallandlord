@@ -78,7 +78,7 @@
                         {{ $trader->created_at->format('M d, Y') }}
                     </td>
                     <td class="px-6 py-3 text-center">
-                        <button class="text-blue-600 hover:underline">View Profile</button>
+                        <a href="{{ route('public.traders.show', $trader->id) }}" class="text-blue-600 hover:underline">View Profile</a>
                     </td>
                 </tr>
             @empty
