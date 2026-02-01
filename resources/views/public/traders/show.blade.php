@@ -18,6 +18,7 @@
                 @php $cleanPhone = preg_replace('/\s+/', '', $trader->phone ?? ''); @endphp
                 <a href="{{ $cleanPhone ? 'tel:'.$cleanPhone : '#' }}" class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Call</a>
                 <a href="mailto:{{ $trader->user->email }}" class="ml-2 px-3 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">Email</a>
+                <a href="#gallery" class="ml-2 px-3 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">Gallery</a>
             </div>
         </div>
 
@@ -111,15 +112,84 @@
             </div>
 
             <!-- Gallery -->
-            <div class="bg-white rounded-lg shadow p-6">
+            @php
+                $galleryItems = [
+                    ['thumb' => 'https://picsum.photos/id/1015/300/300', 'video' => 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4'],
+                    ['thumb' => 'https://picsum.photos/id/1025/300/300', 'video' => 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4'],
+                    ['thumb' => 'https://picsum.photos/id/1035/300/300', 'video' => 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4'],
+                    ['thumb' => 'https://picsum.photos/id/1045/300/300', 'video' => 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4'],
+                    ['thumb' => 'https://picsum.photos/id/1055/300/300', 'video' => 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4'],
+                    ['thumb' => 'https://picsum.photos/id/1065/300/300', 'video' => 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4'],
+                ];
+            @endphp
+            <div id="gallery" class="bg-white rounded-lg shadow p-6 scroll-mt-24">
                 <h3 class="text-lg font-semibold mb-3">Gallery</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    @for ($i = 0; $i < 6; $i++)
-                        <div class="aspect-square overflow-hidden rounded">
-                            <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1389&auto=format&fit=crop" alt="Gallery item" class="w-full h-full object-cover" />
+                <div class="grid grid-cols-4 md:grid-cols-6 gap-2">
+                     @foreach ($galleryItems as $idx => $item)
+                         <button type="button" class="relative aspect-square overflow-hidden rounded group focus:outline-none"
+                                 data-index="{{ $idx }}">
+                             <img src="{{ $item['thumb'] }}" alt="Gallery item" class="w-full h-full object-cover" />
+                             <span class="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition"></span>
+                         </button>
+                     @endforeach
+                 </div>
+
+                <!-- Modal: Video lightbox -->
+                <div id="galleryModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+                    <div id="galleryBackdrop" class="absolute inset-0 bg-black/60"></div>
+                    <div class="relative bg-white rounded-lg shadow-xl w-full max-w-3xl">
+                        <div class="flex items-center justify-between p-3 border-b">
+                            <h4 class="text-sm font-semibold text-gray-800">Gallery Video</h4>
+                            <button id="galleryClose" type="button" class="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200">Close</button>
                         </div>
-                    @endfor
+                        <div class="p-3">
+                            <video id="galleryVideo" controls class="w-full h-64 sm:h-96 rounded"></video>
+                            <div class="mt-3 flex justify-between">
+                                <button id="galleryPrev" type="button" class="px-3 py-2 rounded bg-gray-100 hover:bg-gray-200">Prev</button>
+                                <button id="galleryNext" type="button" class="px-3 py-2 rounded bg-gray-100 hover:bg-gray-200">Next</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function(){
+                        var buttons = document.querySelectorAll('[data-index]');
+                        var modal = document.getElementById('galleryModal');
+                        var backdrop = document.getElementById('galleryBackdrop');
+                        var video = document.getElementById('galleryVideo');
+                        var items = @json($galleryItems);
+                        var currentIndex = 0;
+                        function openModal(idx){
+                            currentIndex = idx;
+                            video.src = items[currentIndex].video;
+                            modal.classList.remove('hidden');
+                            modal.classList.add('flex');
+                        }
+                        function closeModal(){
+                            modal.classList.add('hidden');
+                            modal.classList.remove('flex');
+                            if (video.pause) video.pause();
+                        }
+                        buttons.forEach(function(btn){
+                            btn.addEventListener('click', function(){
+                                var idx = parseInt(btn.getAttribute('data-index'), 10);
+                                openModal(idx);
+                            });
+                        });
+                        document.getElementById('galleryClose').addEventListener('click', closeModal);
+                        backdrop.addEventListener('click', closeModal);
+                        document.getElementById('galleryPrev').addEventListener('click', function(){
+                            currentIndex = (currentIndex - 1 + items.length) % items.length;
+                            video.src = items[currentIndex].video;
+                        });
+                        document.getElementById('galleryNext').addEventListener('click', function(){
+                            currentIndex = (currentIndex + 1) % items.length;
+                            video.src = items[currentIndex].video;
+                        });
+                        document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+                    });
+                </script>
             </div>
 
             <!-- Reviews -->

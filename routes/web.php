@@ -11,13 +11,34 @@ use App\Http\Controllers\Trader\TraderProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+
+
 Route::get('/', function () {
-    return view('welcome');
+   return view('welcome-v1');
 });
+
+    // time beiing stop versioning, later stage we can active it
+// Route::get('/', function () {
+//     $version = (int) config('app.welcome_version');
+//     return $version === 1 ? view('welcome-v1') : view('welcome');
+// });
+
+// Versioned welcome page preview
+Route::get('/welcome-v1', function () {
+    return view('welcome-v1');
+})->name('welcome.v1');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/profile', function () {
+    abort(403);
+});
+
+Route::get('/dashboard', function () {
+    abort(403);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

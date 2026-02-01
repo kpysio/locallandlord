@@ -123,4 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    // Custom: Welcome page version toggle
+    'welcome_version' => env('APP_WELCOME_VERSION', 0),
+
 ];
