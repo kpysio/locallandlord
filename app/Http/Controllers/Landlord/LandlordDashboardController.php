@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Landlord;
 
 use App\Http\Controllers\Controller;
 use App\Models\Trader;
+use App\Models\Landlord;
 
 class LandlordDashboardController extends Controller
 {
@@ -14,12 +15,18 @@ class LandlordDashboardController extends Controller
 
     public function index()
     {
-        $landlord = auth()->user()->landlord;
+        $user = auth()->user();
+        $landlord = $user->landlord;
 
-        $propertiesCount = $landlord->properties()->count();
+        // Ensure landlord profile exists for landlord users
+        if (!$landlord && $user->user_type === 'landlord') {
+            $landlord = Landlord::firstOrCreate(['user_id' => $user->id]);
+        }
+
+        $propertiesCount = $landlord ? $landlord->properties()->count() : 0;
         $tradersCount = Trader::count();
-        $totalRent = $landlord->properties()->sum('rent_amount');
-        $availableProperties = $landlord->properties()->where('status', 'available')->count();
+        $totalRent = $landlord ? $landlord->properties()->sum('rent_amount') : 0;
+        $availableProperties = $landlord ? $landlord->properties()->where('status', 'available')->count() : 0;
 
         return view('landlord.dashboard', compact(
             'propertiesCount',
