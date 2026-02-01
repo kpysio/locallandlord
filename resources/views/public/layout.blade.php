@@ -13,7 +13,7 @@
     <div class="bg-white shadow p-4 flex justify-between items-center">
         <a href="{{ url('/') }}" class="text-xl font-semibold">LocalLandlord</a>
         <div class="flex items-center gap-3 text-sm">
-            <a href="{{ route('landlord.traders.index') }}" class="px-3 py-2 rounded hover:bg-gray-100">Traders</a>
+            <a href="{{ route('landlord.traders.index') }}" class="px-3 py-2 rounded hover:bg-gray-100">Landlord</a>
             @auth
                 <a href="{{ route('landlord.dashboard') }}" class="px-3 py-2 rounded hover:bg-gray-100">Dashboard</a>
                 <form method="POST" action="{{ route('logout') }}" class="inline">
