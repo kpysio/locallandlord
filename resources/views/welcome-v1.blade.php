@@ -16,7 +16,6 @@
       <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Business Details</h1>
       <p class="mt-3 text-gray-700">
         We are helping to find right and vetted tradesperson in your community to fix your problem without your presence.
-        <a href="https://www.landlordstudio.com/uk/features/property-maintenance" target="_blank" rel="noopener" class="text-indigo-600 hover:text-indigo-700 underline">Learn more</a>
       </p>
       <p class="mt-2 text-gray-700">
         We are vertting Tradepersoon in your local area get quote and fix your problem without any hesitate.
